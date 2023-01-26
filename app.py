@@ -126,8 +126,12 @@ def main():
 
     st.header('📦Obstacle Detection')
     st.subheader('👈🏽 Select options left-haned menu bar.')
-    model = load_model(cfg_model_path)
-    model.cuda() if deviceoption == 'cuda' else model.cpu()
+    try:
+        model = load_model(cfg_model_path)
+        model.cuda() if deviceoption == 'cuda' else model.cpu()
+        st.text('Model is ready to use!')
+    except:
+        st.text('Model not fund')
     if option == "Image":    
         imageInput(model, datasrc)
     elif option == "Video": 
