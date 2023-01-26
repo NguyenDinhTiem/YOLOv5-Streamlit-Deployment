@@ -128,14 +128,11 @@ def main():
 
     st.header('📦Obstacle Detection')
     st.subheader('👈🏽 Select options left-haned menu bar.')
-    if st.button('Play!'):
-        st.text('Model is ready to use!')
-        if option == "Image":    
-            imageInput(deviceoption, datasrc)
-        elif option == "Video": 
-            videoInput(deviceoption, datasrc)
-    else:
-        st.text('Click Play to run :))')
+    st.text('Model is ready to use!')
+    if option == "Image":    
+        imageInput(deviceoption, datasrc)
+    elif option == "Video": 
+        videoInput(deviceoption, datasrc)
    
 
     
