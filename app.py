@@ -95,7 +95,7 @@ def videoInput(device, src):
         video_bytes = st_video.read()
         st.video(video_bytes)
         st.write("Uploaded Video")
-        detect(weights=cfg_model_path, source=imgpath, device=0, project= out_dir) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu')
+        detect(weights=cfg_model_path, source=imgpath, device=0, project= out_dir) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu', project= out_dir)
         st_video2 = open(outputpath, 'rb')
         video_bytes2 = st_video2.read()
         st.video(video_bytes2)
