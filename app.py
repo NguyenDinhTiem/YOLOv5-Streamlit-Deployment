@@ -130,12 +130,13 @@ def main():
         model = load_model(cfg_model_path)
         model.cuda() if deviceoption == 'cuda' else model.cpu()
         st.text('Model is ready to use!')
+        if option == "Image":    
+            imageInput(model, datasrc)
+        elif option == "Video": 
+            videoInput(deviceoption, datasrc)
     else:
         st.text('Click Play to run :))')
-    if option == "Image":    
-        imageInput(model, datasrc)
-    elif option == "Video": 
-        videoInput(deviceoption, datasrc)
+   
 
     
 
