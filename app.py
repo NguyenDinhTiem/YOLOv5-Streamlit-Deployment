@@ -105,6 +105,8 @@ def videoInput(device, src):
         with open(latest_file, 'rb') as f:
             st.download_button('Download output', f, file_name= uploaded_video.name)  # Defaults to 'application/octet-stream'
 
+def load_model(cfg_model_path):
+    torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path , force_reload=True) 
 
 
 def main():
@@ -123,7 +125,7 @@ def main():
 
     st.header('📦Obstacle Detection')
     st.subheader('👈🏽 Select options left-haned menu bar.')
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path , force_reload=True) 
+    model = load_model(cfg_model_path)
     model.cuda() if deviceoption == 'cuda' else model.cpu()
     if option == "Image":    
         imageInput(model, datasrc)
