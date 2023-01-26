@@ -96,7 +96,7 @@ def videoInput(device, src):
         st.video(video_bytes)
         st.write("Uploaded Video")
         detect(weights=cfg_model_path, source=imgpath, device=0, project= out_dir) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu', project= out_dir)
-        list_of_files = glob.glob(out_dir+'/**/*', recursive=True)
+        list_of_files = glob.glob(out_dir+'/**/*.mp4', recursive=True)
         latest_file = max(list_of_files, key=os.path.getctime)
         print(latest_file)
         st_video2 = open(latest_file, 'rb')
