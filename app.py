@@ -97,7 +97,7 @@ def videoInput(src):
         convert_video_to_264 = os.path.join(path_video, 'h264_'+name_video)
         os.system('ffmpeg -i {} -vcodec libx264 {}'.format(latest_file, convert_video_to_264))
 
-        st.write(convert_video_to_264)
+        #st.write(convert_video_to_264)
         
         st_video2 = open(convert_video_to_264, 'rb')
         video_bytes2 = st_video2.read()
