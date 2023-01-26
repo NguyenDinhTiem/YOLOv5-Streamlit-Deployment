@@ -19,7 +19,7 @@ if cfg_enable_url_download:
 ## END OF CFG
 
 
-def imageInput(device ,src):
+def imageInput(src):
     
     if src == 'Upload your own data.':
         image_file = st.file_uploader("Upload An Image", type=['png', 'jpeg', 'jpg'])
@@ -35,7 +35,7 @@ def imageInput(device ,src):
                     f.write(image_file.getbuffer())
                 #call Model prediction--
                 model = load_model(cfg_model_path)
-                model.cuda() if device == 'cuda' else model.cpu()
+#                 model.cuda() if device == 'cuda' else model.cpu()
                 pred = model(imgpath)
                 pred.render()  # render bbox in image
                 for im in pred.ims:
@@ -75,7 +75,7 @@ def imageInput(device ,src):
 
 
 
-def videoInput(device, src):
+def videoInput(src):
     uploaded_video = st.file_uploader("Upload Video", type=['mp4', 'mpeg', 'mov'])
     if uploaded_video != None:
 
@@ -89,7 +89,7 @@ def videoInput(device, src):
         video_bytes = st_video.read()
         st.video(video_bytes)
         st.write("Uploaded Video")
-        detect(weights=cfg_model_path, source=imgpath, device=0) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu')
+        detect(weights=cfg_model_path, source=imgpath, device='cpu')
         list_of_files = glob.glob('runs/**/*', recursive=True)
         latest_file = max(list_of_files, key=os.path.getctime)
         path_video = os.path.dirname(latest_file)
@@ -120,19 +120,23 @@ def main():
         
                 
     option = st.sidebar.radio("Select input type.", ['Image', 'Video'])
-    if torch.cuda.is_available():
-        deviceoption = st.sidebar.radio("Select compute Device.", ['cpu', 'cuda'], disabled = False, index=1)
-    else:
-        deviceoption = st.sidebar.radio("Select compute Device.", ['cpu', 'cuda'], disabled = True, index=0)
+#     if torch.cuda.is_available():
+#         deviceoption = st.sidebar.radio("Select compute Device.", ['cpu', 'cuda'], disabled = False, index=1)
+#     else:
+#         deviceoption = st.sidebar.radio("Select compute Device.", ['cpu', 'cuda'], disabled = True, index=0)
     # -- End of Sidebar
 
     st.header('📦Obstacle Detection')
     st.subheader('👈🏽 Select options left-haned menu bar.')
     st.text('Model is ready to use!')
+#     if option == "Image":    
+#         imageInput(deviceoption, datasrc)
+#     elif option == "Video": 
+#         videoInput(deviceoption, datasrc)
     if option == "Image":    
-        imageInput(deviceoption, datasrc)
+        imageInput(datasrc)
     elif option == "Video": 
-        videoInput(deviceoption, datasrc)
+        videoInput(datasrc)
    
 
     
