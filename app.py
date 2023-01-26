@@ -17,11 +17,9 @@ if cfg_enable_url_download:
     url = "https://archive.org/download/yolov5n/yolov5n.pt" #Configure this if you set cfg_enable_url_download to True
     cfg_model_path = f"models/{url.split('/')[-1:][0]}" #config model path from url name
 ## END OF CFG
-
-
-
-
-
+@st.cache
+model = torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path , force_reload=True) 
+model.cuda() if device == 'cuda' else model.cpu()
 
 def imageInput(device, src):
     
@@ -39,8 +37,6 @@ def imageInput(device, src):
                 f.write(image_file.getbuffer())
 
             #call Model prediction--
-            model = torch.hub.load('ultralytics/yolov5', 'custom', path='models/yolov5n.pt', force_reload=True) 
-            model.cuda() if device == 'cuda' else model.cpu()
             pred = model(imgpath)
             pred.render()  # render bbox in image
             for im in pred.ims:
@@ -66,7 +62,7 @@ def imageInput(device, src):
         with col2:            
             if image_file is not None and submit:
                 #call Model prediction--
-                model = torch.hub.load('ultralytics/yolov5', 'custom', path=cfg_model_path, force_reload=True) 
+#                 model = torch.hub.load('ultralytics/yolov5', 'custom', path=cfg_model_path, force_reload=True) 
                 pred = model(image_file)
                 pred.render()  # render bbox in image
                 for im in pred.ims:
