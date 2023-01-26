@@ -19,9 +19,8 @@ if cfg_enable_url_download:
 ## END OF CFG
 
 
-def imageInput(device ,rc):
-    model = load_model(cfg_model_path)
-    model.cuda() if device == 'cuda' else model.cpu()
+def imageInput(device ,src):
+    
     if src == 'Upload your own data.':
         image_file = st.file_uploader("Upload An Image", type=['png', 'jpeg', 'jpg'])
         col1, col2 = st.columns(2)
@@ -29,22 +28,23 @@ def imageInput(device ,rc):
             img = Image.open(image_file)
             with col1:
                 st.image(img, caption='Uploaded Image', use_column_width='always')
-            ts = datetime.timestamp(datetime.now())
-            imgpath = os.path.join('data/uploads', str(ts)+image_file.name)
-            outputpath = os.path.join('data/outputs', os.path.basename(imgpath))
-            with open(imgpath, mode="wb") as f:
-                f.write(image_file.getbuffer())
+                ts = datetime.timestamp(datetime.now())
+                imgpath = os.path.join('data/uploads', str(ts)+image_file.name)
+                outputpath = os.path.join('data/outputs', os.path.basename(imgpath))
+                with open(imgpath, mode="wb") as f:
+                    f.write(image_file.getbuffer()
+                #call Model prediction--
+                model = load_model(cfg_model_path)
+                model.cuda() if device == 'cuda' else model.cpu()
+                pred = model(imgpath)
+                pred.render()  # render bbox in image
+                for im in pred.ims:
+                    im_base64 = Image.fromarray(im)
+                    im_base64.save(outputpath)
 
-            #call Model prediction--
-            pred = model(imgpath)
-            pred.render()  # render bbox in image
-            for im in pred.ims:
-                im_base64 = Image.fromarray(im)
-                im_base64.save(outputpath)
+                #--Display predicton
 
-            #--Display predicton
-            
-            img_ = Image.open(outputpath)
+                img_ = Image.open(outputpath)
             with col2:
                 st.image(img_, caption='Model Prediction(s)', use_column_width='always')
 
