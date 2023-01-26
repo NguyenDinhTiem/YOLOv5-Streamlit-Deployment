@@ -106,11 +106,12 @@ def videoInput(device, src):
             st.download_button('Download output', f, file_name= uploaded_video.name)  # Defaults to 'application/octet-stream'
 
 def load_model(cfg_model_path):
-    return torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path , force_reload=True) 
+    return torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path , force_reload=True, _verbose=False) 
 
 
 def main():
     # -- Sidebar
+    st.snow()
     st.sidebar.title('⚙️Options')
     datasrc = st.sidebar.radio("Select input source.", ['From test set.', 'Upload your own data.'])
     
