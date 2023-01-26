@@ -19,8 +19,9 @@ if cfg_enable_url_download:
 ## END OF CFG
 
 
-def imageInput(model, src):
-    
+def imageInput(device ,rc):
+    model = load_model(cfg_model_path)
+    model.cuda() if device == 'cuda' else model.cpu()
     if src == 'Upload your own data.':
         image_file = st.file_uploader("Upload An Image", type=['png', 'jpeg', 'jpg'])
         col1, col2 = st.columns(2)
@@ -60,7 +61,8 @@ def imageInput(model, src):
         with col2:            
             if image_file is not None and submit:
                 #call Model prediction--
-#                 model = torch.hub.load('ultralytics/yolov5', 'custom', path=cfg_model_path, force_reload=True) 
+#                 model = load_model(cfg_model_path)
+#                 model.cuda() if deviceoption == 'cuda' else model.cpu()
                 pred = model(image_file)
                 pred.render()  # render bbox in image
                 for im in pred.ims:
@@ -106,7 +108,7 @@ def videoInput(device, src):
             st.download_button('Download output', f, file_name= uploaded_video.name)  # Defaults to 'application/octet-stream'
 
 def load_model(cfg_model_path):
-    return torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path, verbose = False) 
+    return torch.hub.load('ultralytics/yolov5', 'custom', path=cfg_model_path, force_reload=True) 
 
 
 def main():
@@ -127,13 +129,9 @@ def main():
     st.header('📦Obstacle Detection')
     st.subheader('👈🏽 Select options left-haned menu bar.')
     if st.button('Play!'):
-        model = load_model(cfg_model_path)
-        os.system('cls')
-        model.cuda() if deviceoption == 'cuda' else model.cpu()
-        os.system('cls')
         st.text('Model is ready to use!')
         if option == "Image":    
-            imageInput(model, datasrc)
+            imageInput(deviceoption, datasrc)
         elif option == "Video": 
             videoInput(deviceoption, datasrc)
     else:
