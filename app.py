@@ -32,7 +32,7 @@ def imageInput(device ,src):
                 imgpath = os.path.join('data/uploads', str(ts)+image_file.name)
                 outputpath = os.path.join('data/outputs', os.path.basename(imgpath))
                 with open(imgpath, mode="wb") as f:
-                    f.write(image_file.getbuffer()
+                    f.write(image_file.getbuffer())
                 #call Model prediction--
                 model = load_model(cfg_model_path)
                 model.cuda() if device == 'cuda' else model.cpu()
