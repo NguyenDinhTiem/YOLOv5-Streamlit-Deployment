@@ -80,12 +80,14 @@ def imageInput(device, src):
 
 
 def videoInput(device, src):
+    out_dir = 'data/video_output'
+    os.mkdir(out_dir)
     uploaded_video = st.file_uploader("Upload Video", type=['mp4', 'mpeg', 'mov'])
     if uploaded_video != None:
 
         ts = datetime.timestamp(datetime.now())
         imgpath = os.path.join('data/uploads', str(ts)+uploaded_video.name)
-        outputpath = os.path.join('data/video_output', os.path.basename(imgpath))
+        outputpath = os.path.join(out_dir, os.path.basename(imgpath))
 
         with open(imgpath, mode='wb') as f:
             f.write(uploaded_video.read())  # save video to disk
@@ -94,7 +96,7 @@ def videoInput(device, src):
         video_bytes = st_video.read()
         st.video(video_bytes)
         st.write("Uploaded Video")
-        detect(weights=cfg_model_path, source=imgpath, device=0, project='data/video_output') if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu')
+        detect(weights=cfg_model_path, source=imgpath, device=0, project= out_dir) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu')
         st_video2 = open(outputpath, 'rb')
         video_bytes2 = st_video2.read()
         st.video(video_bytes2)
