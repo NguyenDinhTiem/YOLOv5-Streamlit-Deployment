@@ -86,7 +86,7 @@ def videoInput(device, src):
 
         ts = datetime.timestamp(datetime.now())
         imgpath = os.path.join('data/uploads', str(ts)+uploaded_video.name)
-        outputpath = os.path.join(out_dir, os.path.basename(imgpath))
+        outputpath = os.path.join(out_dir+'/**', os.path.basename(imgpath))
 
         with open(imgpath, mode='wb') as f:
             f.write(uploaded_video.read())  # save video to disk
