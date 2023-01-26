@@ -80,7 +80,7 @@ def imageInput(device, src):
 
 
 def videoInput(device, src):
-    out_dir = 'video_output'
+    out_dir = 'data/video_output'
     uploaded_video = st.file_uploader("Upload Video", type=['mp4', 'mpeg', 'mov'])
     if uploaded_video != None:
 
