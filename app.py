@@ -80,13 +80,11 @@ def imageInput(device, src):
 
 
 def videoInput(device, src):
-    out_dir = 'data/video_output'
     uploaded_video = st.file_uploader("Upload Video", type=['mp4', 'mpeg', 'mov'])
     if uploaded_video != None:
 
         ts = datetime.timestamp(datetime.now())
         imgpath = os.path.join('data/uploads', str(ts)+uploaded_video.name)
-#         outputpath = os.path.join(out_dir+'/**', os.path.basename(imgpath))
 
         with open(imgpath, mode='wb') as f:
             f.write(uploaded_video.read())  # save video to disk
@@ -95,19 +93,21 @@ def videoInput(device, src):
         video_bytes = st_video.read()
         st.video(video_bytes)
         st.write("Uploaded Video")
-        detect(weights=cfg_model_path, source=imgpath, device=0, project= out_dir) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu', project= out_dir)
-        list_of_files = glob.glob(out_dir+'/**/*.mp4', recursive=True)
+        detect(weights=cfg_model_path, source=imgpath, device=0) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu')
+        list_of_files = glob.glob('runs/**/*.mp4', recursive=True)
         st.write(list_of_files)
-   
-        list_of_files1 = glob.glob(out_dir+'/**/*.mp4', recursive=True)
-        st.write(list_of_files1)
-
+        
         latest_file = max(list_of_files, key=os.path.getctime)
         st.write(latest_file)
+        
         st_video2 = open(latest_file, 'rb')
         video_bytes2 = st_video2.read()
         st.video(video_bytes2)
         st.write("Model Prediction")
+        
+        with open(latest_file, 'rb') as f:
+            st.download_button('Download output', f, file_name= uploaded_video.name)  # Defaults to 'application/octet-stream'
+
 
 
 def main():
