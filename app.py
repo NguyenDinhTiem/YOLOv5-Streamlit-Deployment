@@ -86,7 +86,7 @@ def videoInput(device, src):
 
         ts = datetime.timestamp(datetime.now())
         imgpath = os.path.join('data/uploads', str(ts)+uploaded_video.name)
-        outputpath = os.path.join(out_dir+'/**', os.path.basename(imgpath))
+#         outputpath = os.path.join(out_dir+'/**', os.path.basename(imgpath))
 
         with open(imgpath, mode='wb') as f:
             f.write(uploaded_video.read())  # save video to disk
@@ -96,7 +96,9 @@ def videoInput(device, src):
         st.video(video_bytes)
         st.write("Uploaded Video")
         detect(weights=cfg_model_path, source=imgpath, device=0, project= out_dir) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu', project= out_dir)
-        st_video2 = open(outputpath, 'rb')
+        list_of_files = glob.glob(out_dir+'/**/*', recursive=True)
+        latest_ file = max(list_of_files, key=os.path.getctime)
+        st_video2 = open(latest_ file, 'rb')
         video_bytes2 = st_video2.read()
         st.video(video_bytes2)
         st.write("Model Prediction")
