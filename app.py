@@ -17,11 +17,9 @@ if cfg_enable_url_download:
     url = "https://archive.org/download/yolov5n/yolov5n.pt" #Configure this if you set cfg_enable_url_download to True
     cfg_model_path = f"models/{url.split('/')[-1:][0]}" #config model path from url name
 ## END OF CFG
-@st.cache
-model = torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path , force_reload=True) 
-model.cuda() if device == 'cuda' else model.cpu()
 
-def imageInput(device, src):
+
+def imageInput(model, src):
     
     if src == 'Upload your own data.':
         image_file = st.file_uploader("Upload An Image", type=['png', 'jpeg', 'jpg'])
@@ -125,8 +123,10 @@ def main():
 
     st.header('📦Obstacle Detection')
     st.subheader('👈🏽 Select options left-haned menu bar.')
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path = cfg_model_path , force_reload=True) 
+    model.cuda() if deviceoption == 'cuda' else model.cpu()
     if option == "Image":    
-        imageInput(deviceoption, datasrc)
+        imageInput(model, datasrc)
     elif option == "Video": 
         videoInput(deviceoption, datasrc)
 
