@@ -128,7 +128,9 @@ def main():
     st.subheader('👈🏽 Select options left-haned menu bar.')
     if st.button('Play!'):
         model = load_model(cfg_model_path)
+        os.system('cls')
         model.cuda() if deviceoption == 'cuda' else model.cpu()
+        os.system('cls')
         st.text('Model is ready to use!')
         if option == "Image":    
             imageInput(model, datasrc)
