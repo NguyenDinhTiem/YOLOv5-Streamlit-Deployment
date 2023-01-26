@@ -94,13 +94,16 @@ def videoInput(device, src):
         st.video(video_bytes)
         st.write("Uploaded Video")
         detect(weights=cfg_model_path, source=imgpath, device=0) if device == 'cuda' else detect(weights=cfg_model_path, source=imgpath, device='cpu')
-        list_of_files = glob.glob('runs/**/*.mp4', recursive=True)
-        st.write(list_of_files)
-        
+        list_of_files = glob.glob('runs/**/*', recursive=True)
         latest_file = max(list_of_files, key=os.path.getctime)
-        st.write(latest_file)
+        path_video = os.path.dirname(latest_file)
+        name_video = os.path.basename(latest_file)
+        convert_video_to_264 = os.path.join(path_video, 'h264_'+name_video)
+        os.system('ffmpeg -i {} -vcodec libx264 {}'.format(latest_file, convert_video_to_264))
+
+        st.write(convert_video_to_264)
         
-        st_video2 = open(latest_file, 'rb')
+        st_video2 = open(convert_video_to_264, 'rb')
         video_bytes2 = st_video2.read()
         st.video(video_bytes2)
         st.write("Model Prediction")
