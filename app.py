@@ -61,8 +61,8 @@ def imageInput(device ,src):
         with col2:            
             if image_file is not None and submit:
                 #call Model prediction--
-#                 model = load_model(cfg_model_path)
-#                 model.cuda() if deviceoption == 'cuda' else model.cpu()
+                model = load_model(cfg_model_path)
+                model.cuda() if deviceoption == 'cuda' else model.cpu()
                 pred = model(image_file)
                 pred.render()  # render bbox in image
                 for im in pred.ims:
