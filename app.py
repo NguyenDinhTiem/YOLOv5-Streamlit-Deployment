@@ -126,7 +126,7 @@ def main():
 #         deviceoption = st.sidebar.radio("Select compute Device.", ['cpu', 'cuda'], disabled = True, index=0)
     # -- End of Sidebar
 
-    st.header('📦Obstacle Detection')
+    st.header('📦Object Detection')
     st.subheader('👈🏽 Select options left-haned menu bar.')
     st.text('Model is ready to use!')
 #     if option == "Image":    
